@@ -16,10 +16,14 @@ const userSchema = new mongoose.Schema(
             type: String,
             required: false,
         },
+        avatar: {
+            type: String,
+            dafault: "https://cdn.dribbble.com/users/5534/screenshots/14230133/profile_4x.jpg",
+        },
     },
-    { timestamps: true }
+{ timestamps: true }
 );
 
-const user = mongoose.model("user" , userSchema);
+const User = mongoose.model("User", userSchema);
 
-export default user;
+export default User;
