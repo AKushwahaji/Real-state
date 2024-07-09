@@ -73,6 +73,15 @@ export const google = async (req, res, next) => {
   }
 };
 
+export const signOut = async (req,res,next) =>{
+   try {
+    res.clearCookie('access_token');
+    res.status(200).json("User has been logged out! ");
+   } catch (error) {
+    next(error);
+   }
+};
+
 // await is used so that unyil all the above things does not completed lower code will not execute
 // await newuser.save();
 //    res.send(newuser);     
