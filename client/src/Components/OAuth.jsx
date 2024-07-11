@@ -1,4 +1,4 @@
-import React from 'react'
+
 import { getAuth, GoogleAuthProvider, signInWithPopup } from 'firebase/auth';
 import { app } from '../firebase.js';
 import { useDispatch } from "react-redux";
@@ -34,7 +34,7 @@ const OAuth = () => {
 
 
         } catch (error) {
-            console.log("Could not sign in with google");
+            console.log("Could not sign in with google",error);
         }
     };
 

@@ -5,6 +5,7 @@ import userRouter from "./routes/user.route.js";
 import authRouter from "./routes/auth.route.js"
 import cookieParser from "cookie-parser";
 import listingRouter from "./routes/listing.route.js"
+import path from "path";
 
 dotenv.config();
 
@@ -16,7 +17,7 @@ mongoose.connect(process.env.MONGO).then(() => {
         console.log("Mongo db connection Error: " + err);
     });
 
-
+const __dirname = path.resolve();
 
 const app = express();
 app.use(express.json());
@@ -29,8 +30,14 @@ app.listen(3000, () => {
 
 app.use("/api/user", userRouter);
 app.use("/api/auth", authRouter);
-app.use("/api/listing",listingRouter);
+app.use("/api/listing", listingRouter);
 
+
+//  added for deploying or rendering online -- next two function only
+// app.use(express.static(path.json(__dirname, "/client/dist")));
+// app.get("*", (req, res) => {
+//     res.sendFile(path.join(__dirname, "client", "dist", "index,html"));
+// });
 //middleware
 app.use((err, req, res, next) => {
     const statusCode = err.statusCode || 500;

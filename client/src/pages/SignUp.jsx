@@ -1,14 +1,14 @@
 
-import {set} from "mongoose";
-import {useNavigate, Link} from 'react-router-dom'
-import React,{useState} from 'react'
+import { set } from "mongoose";
+import { useNavigate, Link } from 'react-router-dom'
+import { useState } from 'react'
 import OAuth from "../Components/OAuth.jsx";
 
 
 const SignUp = () => {
 
-  const [error,setError] = useState(null);
-  const [loading, setLoading] =useState(false);
+  const [error, setError] = useState(null);
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
   const [formData, setFormData] = useState({});
@@ -32,21 +32,21 @@ const SignUp = () => {
       });
       const data = await res.json();
       console.log(data);
-        if(data.success==false){
-          setLoading(false);
-          setError(data.message);
-          return;
-        }
+
+      if (data.success == false) {
         setLoading(false);
-        setError (null);
-        navigate("/sign-in");
+        setError(data.message);
+        return;
+      }
+
+      setLoading(false);
+      setError(null);
+      navigate("/sign-in");
     } catch (error) {
-        setLoading(false);
-        setError(error.message);
+      setLoading(false);
+      setError(error.message);
     }
-
-
-  }
+  };
 
 
   return (
@@ -70,23 +70,23 @@ const SignUp = () => {
         <button className="bg-slate-700 text-white p-3 rounded-lg uppercase hover:opacity-95 disabled:opacity-80">
           {loading ? "Loading..." : "Sign Up"}
         </button>
-        
-        <OAuth/>
+
+        <OAuth />
 
       </form>
 
       <div className="flex gap-4 mt-5">
         <p>Have an account?</p>
-        
-        <Link to = {"/sign-in"}>
-        <span className="text-blue-700">Sign In</span>
+
+        <Link to={"/sign-in"}>
+          <span className="text-blue-700">Sign In</span>
         </Link>
       </div>
 
-        {error && <p className="text-red-500">{error}</p>}
-        </div>
-        
-  )
-}
+      {error && <p className="text-red-500">{error}</p>}
+    </div>
+
+  );
+};
 
 export default SignUp

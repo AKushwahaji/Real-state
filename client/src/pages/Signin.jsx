@@ -1,7 +1,8 @@
 
-import {set} from "mongoose";
+
+
 import {useNavigate, Link} from 'react-router-dom'
-import React,{useState} from 'react'
+import {useState} from 'react'
 import { useDispatch ,useSelector} from "react-redux";
 import { signInStart,signInSuccess,signInFailure } from "../redux/user/userSlice.js";
 import OAuth from "../Components/OAuth.jsx";
@@ -61,7 +62,7 @@ const SignIn = () => {
           onChange={handleChange}
         />
 
-        <button className="bg-slate-700 text-white p-3 rounded-lg uppercase hover:opacity-95 disabled:opacity-80">
+        <button disabled={loading} className="bg-slate-700 text-white p-3 rounded-lg uppercase hover:opacity-95 disabled:opacity-80">
           {loading ? "Loading..." : "Sign In"}
         </button>
 
@@ -70,7 +71,7 @@ const SignIn = () => {
       </form>
 
       <div className="flex gap-4 mt-5">
-        <p>Dont an account?</p>
+        <p>Dont have an account?</p>
         
         <Link to = {"/sign-up"}>
         <span className="text-blue-700">Sign Up</span>
@@ -80,7 +81,7 @@ const SignIn = () => {
         {error && <p className="text-red-500">{error}</p>}
         </div>
         
-  )
-}
+  );
+};
 
-export default SignIn
+export default SignIn;

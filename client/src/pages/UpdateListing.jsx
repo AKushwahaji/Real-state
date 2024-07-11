@@ -1,16 +1,11 @@
-import { useState } from 'react'
-import {
-    getDownloadURL,
-    getStorage,
-    ref,
-    uploadBytesResumable
-} from "firebase/storage";
+import { useState ,useEffect} from 'react'
+import { getDownloadURL, getStorage, ref, uploadBytesResumable } from "firebase/storage";
 import { app } from '../firebase.js';
 // import { current } from '@reduxjs/toolkit';
 import { useSelector } from 'react-redux';
-import { useNavigate } from "react-router-dom";
+import { useNavigate,useParams } from "react-router-dom";
 
-const CreateListing = () => {
+const UpdateListing = () => {
 
     const [files, setFiles] = useState([]);
     const [formData, setFormData] = useState({
@@ -33,10 +28,26 @@ const CreateListing = () => {
     const [uploading, setUploading] = useState(false);
     const [error, setError] = useState(false);
     const [loading, setLoading] = useState(false);
-    const { currentUser } = useSelector((state) => state.user);
+    const {currentUser} = useSelector((state) => state.user);
     const navigate = useNavigate();
+    const params = useParams();
 
-    console.log(formData);
+    useEffect(() => {
+        const fetchListing = async () => {
+            const listingId = params.listingId;
+            const res = await fetch(`/api/listing/get/${listingId}`);
+            const data = await res.json();
+    
+            if (data.success === false) {
+                console.log(data.message);
+                return;
+            }
+            setFormData(data);
+        };
+    
+        fetchListing();
+    
+      }, []);
 
     const handleImageSubmit = (e) => {
         if (files.length > 0 && files.length + formData.imageUrls.length < 7) {
@@ -94,7 +105,7 @@ const CreateListing = () => {
     const handleRemoveImage = (index) => {
         setFormData({
             ...formData,
-            imageUrls: formData.imageUrls.filter((_, i) => (i !== index)),
+            imageUrls: formData.imageUrls.filter((_, i) => i !== index),
         });
     };
     const handleChange = (e) => {
@@ -105,13 +116,19 @@ const CreateListing = () => {
                 type: e.target.id,
             });
         }
-        if (e.target.id === "parking" || e.target.id === "furnished" || e.target.id === "offer") {
+        if (e.target.id === "parking" 
+            || e.target.id === "furnished" 
+            || e.target.id === "offer"
+           ) {
             setFormData({
                 ...formData,
                 [e.target.id]: e.target.checked,
             });
         }
-        if (e.target.type === "number" || e.target.type === "text" || e.target.type === "textarea") {
+        if (e.target.type === "number" 
+            || e.target.type === "text" ||
+             e.target.type === "textarea"
+            ) {
             setFormData({
                 ...formData,
                 [e.target.id]: e.target.value,
@@ -119,6 +136,8 @@ const CreateListing = () => {
         }
 
     };
+
+
     const handleSubmit = async (e) => {
 
         e.preventDefault();
@@ -130,7 +149,7 @@ const CreateListing = () => {
             setLoading(true);
             setError(false);
 
-            const res = await fetch("api/listing/create", {
+            const res = await fetch(`/api/listing/update/${params.listingId}`, {
 
                 method: "POST",
                 headers: {
@@ -158,7 +177,7 @@ const CreateListing = () => {
 
     return (
         <main className="p-5 max-w-4xl mx-auto ">
-            <h1 className="text-3xl font-semibold text-center my-7">CreateListing</h1>
+            <h1 className="text-3xl font-semibold text-center my-7">UpdateListing</h1>
             <form onSubmit={handleSubmit} className="flex flex-col sm:flex-row gap-6" >
 
                 <div className="flex flex-col gap-4 flex-1">
@@ -303,8 +322,9 @@ const CreateListing = () => {
                                 <div className='flex flex-col items-center'>
                                     <p>Discounted price</p>
                                     {formData.type === "rent" && (
-                                        <span className='text-xs'>($/month)</span>
+                                        <span className=''></span>
                                     )}
+                                    <span className='text-xs'> ( $ / month ) </span>
                                 </div>
                             </div>
                         )}
@@ -314,7 +334,7 @@ const CreateListing = () => {
                 <div className="flex flex-col gap-4 flex-1">
                     <p className='font-semibold'>
                         Images:
-                        <span className='font-normal text-gray-600 ml-2'>
+                        <span className='font-normal text-gray-600 '>
                             The first image will be the cover(max 6)
                         </span>
                     </p>
@@ -331,7 +351,7 @@ const CreateListing = () => {
                             disabled={uploading}
                             onClick={handleImageSubmit}
                             type='button'
-                            className="p-3 text-green-700 border border-green-700 rounded uppercase hover:shadow-lg disabled:opacity-80"
+                            className="p-3 text-green-700 border border-green-700 rounded-lg"
                         >
                             {uploading ? "Uploading..." : "Upload"}
                         </button>
@@ -344,19 +364,20 @@ const CreateListing = () => {
                         formData.imageUrls.map((url, index) => (
                             <div key={url} 
                             className="flex  justify-between p-3 border items-center">
-                                <img src={url} 
-                                alt="Listing image" className="w-20 h-20 object-contain rounded-lg" />
-                                
-                                <button type="button" onClick={() => handleRemoveImage(index)} className="p-3 text-red-700 rounded-lg uppercase hover:opacity-75"
-                                >
-                                Delete
-                                </button>
+                            
+                            <img src={url} 
+                            alt="Listing image" 
+                            className="w-20 h-20 object-contain rounded-lg" />
+
+                            <button type="button" 
+                            onClick={() => handleRemoveImage(index)} 
+                            className="p-3 text-red-700 rounded-lg uppercase hover:opacity-75">Delete</button>
                             </div>
                         ))
                     }
 
-                    <button disabled={loading || uploading} className="p-3 bg-slate-700 text-white  rounded-lg uppercase hover:opacity-95 disabled:opacity-80">
-                        {loading ? "Creating..." : "Create Listing"}
+                    <button disabled={loading ||uploading} className="p-3 bg-slate-700 text-white  rounded-lg uppercase hover:opacity-95 disabled:opacity-80">
+                        {loading ? "Creating..." : "Update Listing"}
                     </button>
                     {error && <p className='text-red-700 text-sm'>{error}</p>}
                 </div>
@@ -365,4 +386,4 @@ const CreateListing = () => {
     );
 };
 
-export default CreateListing
+export default UpdateListing;
