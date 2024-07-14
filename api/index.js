@@ -34,10 +34,10 @@ app.use("/api/listing", listingRouter);
 
 
 //  added for deploying or rendering online -- next two function only
-// app.use(express.static(path.json(__dirname, "/client/dist")));
-// app.get("*", (req, res) => {
-//     res.sendFile(path.join(__dirname, "client", "dist", "index,html"));
-// });
+app.use(express.static(path.join(__dirname, "/client/dist")));
+app.get("*", (req, res) => {
+    res.sendFile(path.join(__dirname, "client", "dist", "index.html"));
+});
 //middleware
 app.use((err, req, res, next) => {
     const statusCode = err.statusCode || 500;
