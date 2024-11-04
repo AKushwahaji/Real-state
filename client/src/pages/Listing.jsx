@@ -68,6 +68,7 @@ const Listing = () => {
           
           <Swiper navigation>
             {listing.imageUrls.map((url) => {
+              return (
               <SwiperSlide key={url}>
                 <div
                   className="h-[550x]"
@@ -77,6 +78,7 @@ const Listing = () => {
                   }}>
                 </div>
               </SwiperSlide>
+                );
             })}
           </Swiper>
 
