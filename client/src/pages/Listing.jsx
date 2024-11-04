@@ -10,7 +10,7 @@ import {
   FaBed,
   FaChair,
   FaMapMarkerAlt,
-  FaParking,             
+  FaParking,
   FaShare
 } from 'react-icons/fa';
 import Contact from '../Components/Contact';
@@ -59,7 +59,6 @@ const Listing = () => {
         <div>
           <Swiper navigation>
             {listing.imageUrls.map((url) => {
-<<<<<<< HEAD
               return ( // Added return statement
                 <SwiperSlide key={url}>
                   <div
@@ -71,19 +70,6 @@ const Listing = () => {
                   />
                 </SwiperSlide>
               );
-=======
-              return (
-              <SwiperSlide key={url}>
-                <div
-                  className="h-[550x]"
-                  style={{
-                    background: `url(${url}) center no-repeat`,
-                    backgroundSize: "cover",
-                  }}
-                />
-              </SwiperSlide>
-                );
->>>>>>> a2aaef90dd0caeeb965823e68987ecf8997a0057
             })}
           </Swiper>
 
@@ -126,7 +112,6 @@ const Listing = () => {
                   ${+listing.regulerPrice - +listing.discountPrice} OFF
                 </p>
               )}
-
             </div>
             <p className="text-slate-800">
               <span className='font-semibold text-black'> Description</span>
