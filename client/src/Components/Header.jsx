@@ -37,8 +37,8 @@ const Header = () => {
                 <Link to="/">
 
                     <h1 className="font-bold text-sm sm:text-xl flex flex-wrap">
-                        <span className="text-orange-500">Coding Clever</span>
-                        <span className="text-orange-300"> Estate</span>
+                        <span className="text-orange-500">HomeHarbor</span>
+{/*                         <span className="text-orange-300"> Estate</span> */}
                     </h1>
 
                 </Link>

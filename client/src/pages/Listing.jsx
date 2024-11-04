@@ -59,6 +59,7 @@ const Listing = () => {
         <div>
           <Swiper navigation>
             {listing.imageUrls.map((url) => {
+<<<<<<< HEAD
               return ( // Added return statement
                 <SwiperSlide key={url}>
                   <div
@@ -70,6 +71,19 @@ const Listing = () => {
                   />
                 </SwiperSlide>
               );
+=======
+              return (
+              <SwiperSlide key={url}>
+                <div
+                  className="h-[550x]"
+                  style={{
+                    background: `url(${url}) center no-repeat`,
+                    backgroundSize: "cover",
+                  }}
+                />
+              </SwiperSlide>
+                );
+>>>>>>> a2aaef90dd0caeeb965823e68987ecf8997a0057
             })}
           </Swiper>
 
