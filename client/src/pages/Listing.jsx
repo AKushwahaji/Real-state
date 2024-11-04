@@ -10,7 +10,7 @@ import {
   FaBed,
   FaChair,
   FaMapMarkerAlt,
-  FaParking,
+  FaParking,             
   FaShare
 } from 'react-icons/fa';
 import Contact from '../Components/Contact';
@@ -112,7 +112,7 @@ const Listing = () => {
                   ${+listing.regulerPrice - +listing.discountPrice} OFF
                 </p>
               )}
-              
+
             </div>
             <p className="text-slate-800">
               <span className='font-semibold text-black'> Description</span>
