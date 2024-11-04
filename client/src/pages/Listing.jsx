@@ -14,16 +14,17 @@ import {
   FaShare
 } from 'react-icons/fa';
 import Contact from '../Components/Contact';
+import { Autoplay } from 'swiper/modules';
 
 const Listing = () => {
-  SwiperCore.use([Navigation]);
+  SwiperCore.use([Navigation, Autoplay]);
 
   const params = useParams();
   const [listing, setListing] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
   const [copied, setCopied] = useState(false);
-  const [contact, setContact] = useState(false);
+  const [contact, setContact] = useState(false); // Controls contact form visibility
   const { currentUser } = useSelector((state) => state.user);
   console.log(listing);
 
@@ -57,20 +58,40 @@ const Listing = () => {
       )}
       {listing && !loading && !error && (
         <div>
-          <Swiper navigation>
-            {listing.imageUrls.map((url) => {
-              return ( // Added return statement
-                <SwiperSlide key={url}>
+          <Swiper
+            navigation={{
+              nextEl: '.swiper-button-next',
+              prevEl: '.swiper-button-prev',
+            }}
+            autoplay={{
+              delay: 3000, // Delay before the next slide
+              disableOnInteraction: false,
+            }}
+            spaceBetween={-50} // Negative space for overlapping effect
+            speed={1000} // Transition speed (1 second)
+            slidesPerView={1} // Show one slide at a time
+          >
+            {listing.imageUrls.map((url, index) => {
+              return (
+                <SwiperSlide key={index}>
                   <div
-                    className="h-[550px]" // Fixed height typo
+                    className="h-[400px] mx-auto w-[80%] mt-4 relative" // Center and adjust width
                     style={{
                       background: `url(${url}) center no-repeat`,
                       backgroundSize: "cover",
+                      borderRadius: "10px",
+                      boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
                     }}
-                  />
+                  >
+            
+                    
+                  </div>
                 </SwiperSlide>
               );
             })}
+
+            <div className="swiper-button-prev invisible" />
+            <div className="swiper-button-next invisible" />
           </Swiper>
 
           <div className="fixed top-[13%] right-[3%] z-10 border rounded-full w-12 h-12 flex justify-center items-center bg-slate-100 cursor-pointer">
@@ -94,7 +115,7 @@ const Listing = () => {
               {listing.name} -${''}
               {listing.offer
                 ? listing.discountPrice.toLocaleString('en-US')
-                : listing.regulerPrice.toLocaleString('en-US')}
+                : listing.regularPrice.toLocaleString('en-US')}
               {
                 listing.type === 'rent' && '/month'
               }
@@ -109,7 +130,7 @@ const Listing = () => {
               </p>
               {listing.offer && (
                 <p className="bg-green-900 w-full max-w-[200px] text-white text-center p-1 rounded-md">
-                  ${+listing.regulerPrice - +listing.discountPrice} OFF
+                  ${+listing.regularPrice - +listing.discountPrice} OFF
                 </p>
               )}
             </div>
@@ -150,7 +171,10 @@ const Listing = () => {
 
             {currentUser && listing.userRef !== currentUser._id && !contact && (
               <button
-                onClick={() => setContact(true)}
+                onClick={() => {
+                  setContact(true);
+                  console.log("Contact form toggled:", !contact); // Debugging contact toggle
+                }}
                 className='bg-slate-700 text-white rounded-lg uppercase p-3 hover:opacity-85'>
                 Contact Landlord
               </button>
@@ -162,5 +186,4 @@ const Listing = () => {
     </main>
   );
 };
-
 export default Listing;
