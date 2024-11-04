@@ -1,9 +1,8 @@
-import { set } from "mongoose";
+
 import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
 
 const Contact = ({ listing }) => {
-  const [landlord, setLandlord] = useState(null);
+  const [landlord, setLandlord] = useState({});
   const [message, setMessage] = useState("");
 
   useEffect(() => {
@@ -11,23 +10,22 @@ const Contact = ({ listing }) => {
       try {
         const res = await fetch(`/api/user/${listing.userRef}`);
         const data = await res.json();
-        if (data.success === false) {
-          return;
+        if (data.success) {
+          setLandlord(data);
+        } else {
+          // Handle the error (optional)
+          console.error("Failed to fetch landlord data");
         }
-        setLandlord(data);
       } catch (error) {
-        console.log(error);
+        console.error("Error fetching landlord:", error);
       }
     };
 
     fetchLandlord();
   }, [listing.userRef]);
 
-
   const onChange = (e) => {
-
     setMessage(e.target.value);
-
   };
 
   return (
@@ -39,6 +37,7 @@ const Contact = ({ listing }) => {
             for{" "}
             <span className="font-semibold">{listing.name.toLowerCase()}</span>
           </p>
+          <label htmlFor="message" className="sr-only">Message</label>
           <textarea
             name="message"
             id="message"
@@ -49,12 +48,12 @@ const Contact = ({ listing }) => {
             className="w-full border p-3 rounded-lg"
           ></textarea>
 
-          <Link
-            to={`mailto:${landlord.email}?subject=Regarding ${listing.name}&body=${message}`}
+          <a
+            href={`mailto:${landlord.email}?subject=Regarding ${listing.name}&body=${message}`}
             className="bg-slate-700 text-white text-center p-3 uppercase rounded-lg hover:opacity-95"
           >
             Send Message
-          </Link>
+          </a>
         </div>
       )}
     </div>
