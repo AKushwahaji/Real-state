@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Swiper, SwiperSlide } from 'swiper/react';
-import { Navigation } from 'swiper/modules';
+import { Navigation,Autoplay } from 'swiper/modules';
 import SwiperCore from 'swiper';
 import 'swiper/css/bundle';
 import ListingItem from '../Components/ListingItem';
@@ -10,7 +10,7 @@ export default function Home() {
   const [offerListings, setOfferListings] = useState([]);
   const [saleListings, setSaleListings] = useState([]);
   const [rentListings, setRentListings] = useState([]);
-  SwiperCore.use([Navigation]);
+  SwiperCore.use([Navigation,Autoplay]);
   console.log(offerListings);
   useEffect(() => {
     const fetchOfferListings = async () => {
@@ -68,23 +68,34 @@ export default function Home() {
         </Link>
       </div>
 
-      {/* swiper */}
-      <Swiper navigation>
-        {offerListings &&
-          offerListings.length > 0 &&
-          offerListings.map((listing) => (
-            <SwiperSlide>
-              <div
-                style={{
-                  background: `url(${listing.imageUrls[0]}) center no-repeat`,
-                  backgroundSize: 'cover',
-                }}
-                className='h-[500px]'
-                key={listing._id}
-              ></div>
-            </SwiperSlide>
-          ))}
-      </Swiper>
+      <Swiper
+  navigation={{
+    nextEl: '.swiper-button-next',
+    prevEl: '.swiper-button-prev',
+  }}
+  autoplay={{
+    delay: 3000, // Delay between transitions
+    disableOnInteraction: false, // Allows autoplay to continue after user interaction
+  }}
+  loop={true} // Enables looping of slides
+  // className="my-4"
+>
+  {offerListings &&
+    offerListings.length > 0 &&
+    offerListings.map((listing) => (
+      <SwiperSlide key={listing._id}>
+        <div
+          className="h-[550px] mx-auto w-[85%] rounded-lg shadow-lg"
+          style={{
+            background: `url(${listing.imageUrls[0]}) center no-repeat`,
+            backgroundSize: 'cover',
+          }}
+        />
+      </SwiperSlide>
+    ))}
+</Swiper>
+
+
 
       {/* listing results for offer, sale and rent */}
 
